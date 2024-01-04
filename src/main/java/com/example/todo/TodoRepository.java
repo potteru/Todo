@@ -3,6 +3,7 @@ package com.example.todo;
 import java.util.ArrayList;
 
 public interface TodoRepository {
+	
 	ArrayList <Todo> getTodoList();
     
 	Todo addTodo(Todo todo);
