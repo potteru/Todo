@@ -1,4 +1,4 @@
-package com.example.todo;
+package com.example.todo.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,11 +7,13 @@ import java.util.HashMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-public class TodoService implements TodoRepository{
-	
-	private static HashMap<Integer, Todo> todoList = new HashMap<>();
-	int uniqueTodoId = 12;
-	
+import com.example.todo.model.Todo;
+import com.example.todo.repository.TodoRepository;
+
+public class TodoService implements TodoRepository {
+
+    private static HashMap<Integer, Todo> todoList = new HashMap<>();
+
     public TodoService() {
         todoList.put(1, new Todo(1, "Watch Movie", "LOW", "TO DO"));
         todoList.put(2, new Todo(2, "Finish Project", "HIGH", "IN PROGRESS"));
@@ -20,63 +22,69 @@ public class TodoService implements TodoRepository{
         todoList.put(5, new Todo(5, "Go for a Run", "MEDIUM", "DONE"));
 
     }
-    
+
+    int uniqueId = 6;
+
     @Override
     public ArrayList<Todo> getTodoList() {
-        Collection<Todo> todo_list = todoList.values();
-        ArrayList<Todo> arrList = new ArrayList<>(todo_list);
-        return arrList;
+        Collection<Todo> todoCollection = todoList.values();
+        ArrayList<Todo> todos = new ArrayList<>(todoCollection);
+
+        return todos;
     }
 
     @Override
-    public Todo getTodoById(int todoId){
-    	Todo to_do = todoList.get(todoId);
-        if(to_do == null){
+    public Todo getTodoById(int id) {
+        Todo todo = todoList.get(id);
+
+        if (todo == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return to_do;
-    }
 
-    @Override
-    public Todo addTodo(Todo todo){
-    	todo.setId(uniqueTodoId);
-    	todoList.put(uniqueTodoId, todo);
-        uniqueTodoId += 1;
         return todo;
-        
     }
 
     @Override
-    public Todo updateTodo(int todoId, Todo todo) {
-    	Todo existingTodo = todoList.get(todoId);
+    public Todo addTodo(Todo todo) {
+        todo.setId(uniqueId);
+        todoList.put(uniqueId, todo);
 
-        if(existingTodo == null) {
+        uniqueId += 1;
+        return todo;
+    }
+
+    @Override
+    public Todo updateTodo(int id, Todo todo) {
+        Todo existingTodo = todoList.get(id);
+
+        if (existingTodo == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        if (todo.getId() != 0 ) {
-            existingTodo.setId(todoId);
-        }
-        
         if (todo.getTodo() != null) {
             existingTodo.setTodo(todo.getTodo());
         }
+
+        if (todo.getPriority() != null) {
+            existingTodo.setPriority(todo.getPriority());
+        }
+        if (todo.getStatus() != null) {
+            existingTodo.setStatus(todo.getStatus());
+        }
+
         return existingTodo;
     }
-    
+
     @Override
-    public void deleteTodo(int todoId){
-    	Todo todo = todoList.get(todoId);
+    public void deleteTodo(int id) {
 
-        if(todo == null){
+        Todo todo = todoList.get(id);
+        if (todo == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-
-        else{
-        	todoList.remove(todoId);
+        } else {
+            todoList.remove(id);
             throw new ResponseStatusException(HttpStatus.NO_CONTENT);
         }
-        
     }
 
 }

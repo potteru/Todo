@@ -1,18 +1,19 @@
-package com.example.todo;
+// Write your code here
+package com.example.todo.model;
 
 public class Todo {
-	
+
 	private int id;
 	private String todo;
-	private String priority;
 	private String status;
-	
-	public Todo(int id, String todo, String priority, String status) {
+	private String priority;
+
+	public Todo(int id, String todo, String status, String priority) {
 		super();
 		this.id = id;
 		this.todo = todo;
-		this.priority = priority;
 		this.status = status;
+		this.priority = priority;
 	}
 
 	public int getId() {
@@ -31,6 +32,14 @@ public class Todo {
 		this.todo = todo;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public String getPriority() {
 		return priority;
 	}
@@ -39,12 +48,4 @@ public class Todo {
 		this.priority = priority;
 	}
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	
 }
